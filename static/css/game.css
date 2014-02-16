@@ -1,0 +1,24 @@
+
+body {
+	background: black;
+}
+
+canvas#game {
+	float: left;
+	/*width:440px;
+	height:440px;*/
+	background: antiquewhite;
+	margin-left: 15px;
+	border:5px solid gray;
+	border-radius: 10px;
+}
+
+div#board {
+	float: left;
+	height: 440px;
+	width: 600px;
+	margin-left: 15px;
+	background: gray;
+	border:5px solid gray;
+	border-radius: 10px;
+}
