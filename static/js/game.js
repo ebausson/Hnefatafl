@@ -42,6 +42,12 @@ var core = function (){
 	};
 
 	var getAt = function(game, x, y){
+		// if second parameter is an object
+		if (x instanceof Object) {
+			y = x.y;
+			x = x.x;
+		}
+
 		if (x >= 0 && x < gameSize && y >= 0 && y < gameSize) {
 			return game.currentboard[x][y];
 		}
@@ -59,6 +65,7 @@ var core = function (){
 		}
 		return false;
 	}
+	
 	var getAsPositionString = function(xpos, ypos){
 		if (xpos >= 0 && xpos < gameSize && ypos >= 0 && ypos < gameSize) {
 			return String.fromCharCode(65 + xpos) + (ypos+1);

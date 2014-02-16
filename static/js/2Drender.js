@@ -1,7 +1,7 @@
 
 var render2D = function (){
-	var canvas;
 	var context;
+	var selectedCase = null;
 
 	var bordercolor  = "#555555";
 	var bgColor      = "antiquewhite";
@@ -10,9 +10,9 @@ var render2D = function (){
 	var player2crown = "#801000";
 
 
-	var init = function(){
-		canvas = document.getElementById('game');
+	var init = function(canvas, game){
 		context = canvas.getContext('2d');
+		render(game);
 	};
 
 	var render = function(core){
@@ -57,8 +57,21 @@ var render2D = function (){
 		}
 	};
 
+	var onclick = function(game, x, y){
+		var xPos = Math.floor(x/40);
+		var yPos = Math.floor(y/40);
+		var clikedCaseContent = core.getAt(game, xPos, yPos);
+		console.log(clikedCaseContent);
+		if (selectedCase == null && clikedCaseContent%4 > 0) {
+
+		} else if ( selectedCase != null && clikedCaseContent%4 == 0) {
+
+		}
+	}
+
 	return {
 		init: init,
-		render: render
+		render: render,
+		onclick : onclick
 	};
 }();
