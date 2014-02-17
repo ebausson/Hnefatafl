@@ -13,7 +13,7 @@ var render2D = function (){
 	var init = function(canvas, game){
 		context = canvas.getContext('2d');
 		render(game);
-	};
+	}
 
 	var render = function(core){
 		//cleaning game board.
@@ -29,14 +29,19 @@ var render2D = function (){
 				}
 			}
 		}
-	};
+
+		if (selectedCase) {
+			drawRect(context, selectedCase.xPos, selectedCase.yPos, "#33FF00");
+			//TODO : possible moves?
+		}
+	}
 
 	var clearCanvas = function() {
 		var h = context.canvas.height;
 		var w  = context.canvas.width;
 		context.fillStyle = bgColor;
 		context.fillRect(0,0,h,w);
-	};
+	}
 
 	var renderUnit = function(context, xPos, yPos, type) {
 		context.fillStyle = (type==1) ? player1color : player2color;
@@ -55,17 +60,42 @@ var render2D = function (){
 			context.fill();
 			context.closePath();
 		}
-	};
+	}
+
+	var drawRect = function(context, xPos, yPos, color){
+		context.strokeStyle = color;
+		var x = xPos * 40;
+		var y = yPos * 40;
+		context.strokeRect(x, y, 40, 40);
+	}
 
 	var onclick = function(game, x, y){
 		var xPos = Math.floor(x/40);
 		var yPos = Math.floor(y/40);
-		var clikedCaseContent = core.getAt(game, xPos, yPos);
-		console.log(clikedCaseContent);
-		if (selectedCase == null && clikedCaseContent%4 > 0) {
+		var clikedCaseContent = game.getAt(game, xPos, yPos);
 
-		} else if ( selectedCase != null && clikedCaseContent%4 == 0) {
+			// selection
+		if ( clikedCaseContent != 0) {
+			if (game.getCurrentPlayer() == 1 && clikedCaseContent == 1) {
+				selectedCase = {xPos:xPos, yPos:yPos};
+			} else if (game.getCurrentPlayer() == 2 && clikedCaseContent != 1) {
+				selectedCase = {xPos:xPos, yPos:yPos};
+			}
+			render(game);
+			return;
+		}
 
+		else {
+			// at that point, clikedCaseContent == 0
+			if ( selectedCase != null) {
+				var origin = core.getAsPositionString(selectedCase.xPos, selectedCase.yPos);
+				var dest = core.getAsPositionString(xPos, yPos);
+				if (game.canMove(origin, dest)) {
+					game.move(origin, dest);
+					selectedCase = null;
+					render(game);
+				}
+			}
 		}
 	}
 
@@ -73,5 +103,5 @@ var render2D = function (){
 		init: init,
 		render: render,
 		onclick : onclick
-	};
-}();
+	}
+}()
