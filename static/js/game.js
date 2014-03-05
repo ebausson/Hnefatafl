@@ -90,19 +90,25 @@ var core = function (){
 		var destContent = getAt(this, destination.x, destination.y);
 
 
+		// destination has to be empty
 		if (this.currentboard[destination.x][destination.y] != 0 ) {
 			return false;
 		}
 
-
+		// only the king can go in the corner.
 		if (this.gameboard[destination.x][destination.y] == 4) {
 			if (origContent != 3) {
 				return false;
 			}
 		}
 
+		// check current move is for current player.
+		if ( ! isCurrentPlayerPiece(this, originStr)) {
+			return false;
+		}
+
+		// can only be moved on a empty line/colon.
 		var start, end;
-		// can only be moved in a line or a colon.
 		if (origin.x == destination.x) {
 			if (origin.y < destination.y) {
 				start = origin.y + 1;
@@ -157,7 +163,11 @@ var core = function (){
 	var isCurrentPlayerPiece = function(game, positionStr) {
 		var position = getAsPositionObject(positionStr);
 		var piece = getAt(game, position);
-		//TODO
+		var currentPlayer = game.getCurrentPlayer();
+		if (currentPlayer == 1) {
+			return piece == 1;
+		}
+		return piece != 1;
 	}
 
 	return {
