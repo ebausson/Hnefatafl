@@ -82,8 +82,49 @@ var core = function (){
 		}
 		return false;
 	}
+
 	var canMove = function(originStr, destinationStr) {
-		//TODO;
+		var origin = getAsPositionObject(originStr);
+		var destination = getAsPositionObject(destinationStr);
+		var origContent = getAt(this, origin.x, origin.y);
+		var destContent = getAt(this, destination.x, destination.y);
+
+
+		if (this.currentboard[destination.x][destination.y] != 0 ) {
+			return false;
+		}
+
+		var start, end;
+		// can only be moved in a line or a colon.
+		if (origin.x == destination.x) {
+			if (origin.y < destination.y) {
+				start = origin.y + 1;
+				end = destination.y;
+			} else {
+				start = destination.y;
+				end = origin.y - 1;
+			}
+			for (var i = start; i <= end; i++) {
+				if (this.currentboard[origin.x][i] != 0){
+					return false;
+				}
+			}
+		} else if (origin.y == destination.y) {
+			if (origin.x < destination.x) {
+				start = origin.x + 1;
+				end = destination.x;
+			} else {
+				start = destination.x;
+				end = origin.x - 1;
+			}
+			for (var i = start; i <= end; i++) {
+				if (this.currentboard[i][origin.y] != 0){
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
 		return true;
 	}
 
@@ -91,7 +132,7 @@ var core = function (){
 		var origin = getAsPositionObject(originStr);
 		var destination = getAsPositionObject(destinationStr);
 
-		if (canMove(originStr, destinationStr)) {
+		if (this.canMove(originStr, destinationStr)) {
 			//TODO
 			this.currentboard[destination.x][destination.y] = this.currentboard[origin.x][origin.y];
 			this.currentboard[origin.x][origin.y] = 0;
@@ -106,6 +147,11 @@ var core = function (){
 		//TODO
 	}
 
+	var isCurrentPlayerPiece = function(game, positionStr) {
+		var position = getAsPositionObject(positionStr);
+		var piece = getAt(game, position);
+		//TODO
+	}
 
 	return {
 		init: init,
