@@ -94,6 +94,13 @@ var core = function (){
 			return false;
 		}
 
+
+		if (this.gameboard[destination.x][destination.y] == 4) {
+			if (origContent != 3) {
+				return false;
+			}
+		}
+
 		var start, end;
 		// can only be moved in a line or a colon.
 		if (origin.x == destination.x) {
